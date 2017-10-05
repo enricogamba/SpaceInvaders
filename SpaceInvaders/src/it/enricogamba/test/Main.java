@@ -1,41 +1,10 @@
-package it.enricogamba.main;
+package it.enricogamba.test;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 import it.enricogamba.utils.Utils;
-
-/*
- * SPACE INVADERS IDENTIFICATION
- * 
- * 
- * PROCEDURE:
- * 
- * 1. ask the user for a tolerance value in percentage (in order to recognize space invaders and tolerate false positives / negatives)
- * 2. read radar image file list
- * cycle the list:
- * 3. create a matrix from it
- * 	3a. the matrix should be larger than the original file in order to consider edge cases
- * 4. read space invaders images files names
- * 5. cycle the space invaders images files names list (?or ask the user what image they want to analyze?)
- * 	5a. create an empty matrix that will be filled with the recognised space invaders
- * 	5b. read the current space invader file
- * 	5c. create a matrix from the file
- * 	5d. cycle the radar image starting from the top left.
- * 		5d1. For any point extract a submatrix of the same dimensions as the space invader matrix.
- * 		5d2. compare the submatrix with the space invader's one
- * 		5d3. if the matrixes are equals (considering the tolerance) the submatrix is accepted and painted to the output matrix
- * 		5d4. for the moment we don't consider overlapping, so, if the tolerance is satisfied, we jump to the next non-overlapping position (OR NOT???)
- * 	5e. output:
- * 		5e1. output image (with false positives / negatives highlighted)
- * 		5e2. some statistics (number of invaders found, ...)
- * 
- * 
- * COMPROMISES:
- * - Didn't use interface for utilities class
- */
-
 
 public class Main {
 
@@ -48,8 +17,8 @@ public class Main {
 		int tolerance_perc = 0;
 		boolean tolerance_OK = false;
 		
-		String radarImagesFolderPath = "./RadarImages";
-		String knownSpaceInvadersImagesPath = "./KnownSpaceInvadersImages";
+		final String radarImagesFolderPath = "./Test/RadarImages";
+		final String knownSpaceInvadersImagesPath = "./Test/KnownSpaceInvadersImages";
 		final int radarImageMatrixExtensions = 10; //radar image matrix wil be extended in order to analyze the edge cases
 		final char ext = '*'; //char used to mark extensions
 		final char empty = '.'; //char used to mark empty matrix
@@ -65,32 +34,8 @@ public class Main {
 		System.out.println("Welcome to SPACE INVADERS!");
 		System.out.println("**************************************************************");
 		
-		System.out.println("");
-		System.out.println("In order to proceed with the detection, make sure you put the right files in the right folders:");
-		System.out.println("Default space invaders images -> " + knownSpaceInvadersImagesPath);
-		System.out.println("Default radar image -> " + radarImagesFolderPath);
-		System.out.println("Would you like to use the default folders (Y) or your own (N)?");
-		if (!reader.next().trim().equalsIgnoreCase("Y")) {
-			System.out.println("Insert your Radar Image folder path:");
-			while ((radarImagesFolderPath = reader.nextLine().trim()).trim().length()==0) {
-				System.out.println("Insert your Radar Image folder path:");	
-			}
-			System.out.println("Insert yout Space Invaders folder path");
-			while ((knownSpaceInvadersImagesPath = reader.nextLine().trim()).trim().length()==0) {
-				System.out.println("Insert your Space Invaders folder path:");	
-			}
-			System.out.println("You selected these folders:");
-			System.out.println(radarImagesFolderPath);
-			System.out.println(knownSpaceInvadersImagesPath);
-		}
-		System.out.println("");
-		System.out.println("May we proceed? (Y/N)");
-		if (!reader.next().trim().equalsIgnoreCase("Y")) {
-			System.out.println("Sad about that. Bye, see you next time!");
-			System.exit(0);
-		}
-		
-		System.out.println("");
+		System.out.println("Test space invaders images -> " + knownSpaceInvadersImagesPath);
+		System.out.println("Test radar image -> " + radarImagesFolderPath);
 		System.out.println("");
 		System.out.println("Ready to detect space invaders. What percentage of tolerance do you want me to use? [0-100]");
 		System.out.println("(0 -> perfect match, 100 -> really???");
@@ -117,10 +62,6 @@ public class Main {
 		for(File radarImageFile : radarImageFileList) {
 			String radarImageFileName = radarImageFile.getName();
 			System.out.println("This radar image has been found: '"+radarImageFileName + "', proceed? [Y/N]");
-			if (!reader.next().trim().equalsIgnoreCase("Y")) {
-				System.out.println("OK. I will skip to the next file if I find one.");
-				continue;
-			}
 			/*
 			 * 3. create radar image matrix
 			 */
@@ -132,9 +73,7 @@ public class Main {
 		    
 		    //print the extended radar image (just for check & fun)
 		    System.out.println("Would you like to see the extended radar image (extended image is used to find edge cases)? (Y/N)");
-		    if (reader.next().trim().equalsIgnoreCase("Y")) {
 		    	Utils.printImageMatrix(radarImageMatrix);
-		    }
 
 		    
 		    
@@ -152,10 +91,6 @@ public class Main {
 				System.out.println("==================================================================================");
 				System.out.println("==================================================================================");
 				System.out.println("This space invaders image has been found: '"+knownSpaceInvadersImageFileName + "', proceed or skip? [Y/N]");
-				if (!reader.next().trim().equalsIgnoreCase("Y")) {
-					System.out.println("OK. I will skip to the next file if I find one.");
-					continue;
-				}
 				
 				//read image file and create a matrix
 				
@@ -189,10 +124,12 @@ public class Main {
 					System.out.println("Matrix is empty. I will step to the next file.");
 					continue;
 				}
+				
 				System.out.println("==================================================================================");
 				Utils.printImageMatrix(knownSpaceInvaderMatrix);
 				System.out.println("==================================================================================");
 
+				
 				/*
 				 * 	5d. cycle the radar image starting from the top left.
 				 */

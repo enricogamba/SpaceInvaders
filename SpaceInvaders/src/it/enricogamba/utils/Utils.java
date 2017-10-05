@@ -144,4 +144,16 @@ public final class Utils {
 			System.out.print(System.getProperty("line.separator"));
 		}
 	}
+	
+	/*
+	 * given a matrix and an extension, it outputs the matrix without extension
+	 */
+	public static void printImageMatrixNoExtension(char[][] imageMatrix, int extension) {
+	    for (int y=0+extension; y<imageMatrix.length-extension; y++) {
+			for (int x=0+extension; x<imageMatrix[y].length-extension; x++) {
+				System.out.print(imageMatrix[y][x]);
+			}
+			System.out.print(System.getProperty("line.separator"));
+		}
+	}
 }
