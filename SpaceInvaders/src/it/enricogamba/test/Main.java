@@ -221,6 +221,7 @@ public class Main {
 			System.out.println("I will step to the next radar image file.");
 		}//for(File radarImageFile : radarImageFileList) END
 		System.out.println("No more files to examine, quit.");
+		reader.close();
 		System.exit(0);
 	} //main END
 }

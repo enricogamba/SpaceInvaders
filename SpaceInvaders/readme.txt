@@ -27,3 +27,14 @@
  * COMPROMISES:
  * - Didn't use interface for utilities class
  */
+ 
+ 
+ FIle structure:
+ src/it.enricogamba.main -> main class
+ src/it.enricogamba.utils -> utility class(es)
+ src/it.enricogamba.test -> tet main class
+ KnownSpaceInvadersImages -> default space invaders folder
+ RadarImages -> default radar images folder
+ Test/KnownSpaceInvadersImages -> test space invaders folder
+ Test/RadarImages -> test radar images folder
+ 
