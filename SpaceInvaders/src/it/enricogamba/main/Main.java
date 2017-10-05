@@ -33,8 +33,6 @@ import it.enricogamba.utils.Utils;
  * 
  * 
  * COMPROMISES:
- * - Files must be saved in the defined folders inside the project main folder
- * - Only for this test, one radar image is allowed (to analyze more images cycling on them will be enaugh)
  * - Didn't use interface for utilities class
  */
 
@@ -50,8 +48,8 @@ public class Main {
 		int tolerance_perc = 0;
 		boolean tolerance_OK = false;
 		
-		final String radarImagesFolderPath = "./RadarImages";
-		final String knownSpaceInvadersImagesPath = "./KnownSpaceInvadersImages";
+		String radarImagesFolderPath = "./RadarImages";
+		String knownSpaceInvadersImagesPath = "./KnownSpaceInvadersImages";
 		final int radarImageMatrixExtensions = 10; //radar image matrix wil be extended in order to analyze the edge cases
 		final char ext = '*'; //char used to mark extensions
 		final char empty = '.'; //char used to mark empty matrix
@@ -69,8 +67,22 @@ public class Main {
 		
 		System.out.println("");
 		System.out.println("In order to proceed with the detection, make sure you put the right files in the right folders:");
-		System.out.println("space invaders images -> ./KnownSpaceInvadersImages");
-		System.out.println("radar image -> ./RadarImages");
+		System.out.println("Default space invaders images -> " + knownSpaceInvadersImagesPath);
+		System.out.println("Default radar image -> " + radarImagesFolderPath);
+		System.out.println("Would you like to use the default folders (Y) or your own (N)?");
+		if (!reader.next().trim().equalsIgnoreCase("Y")) {
+			System.out.println("Insert your Radar Image folder path:");
+			while ((radarImagesFolderPath = reader.nextLine().trim()).trim().length()==0) {
+				System.out.println("Insert your Radar Image folder path:");	
+			}
+			System.out.println("Insert yout Space Invaders folder path");
+			while ((knownSpaceInvadersImagesPath = reader.nextLine().trim()).trim().length()==0) {
+				System.out.println("Insert your Space Invaders folder path:");	
+			}
+			System.out.println("You selected these folders:");
+			System.out.println(radarImagesFolderPath);
+			System.out.println(knownSpaceInvadersImagesPath);
+		}
 		System.out.println("");
 		System.out.println("May we proceed? (Y/N)");
 		if (!reader.next().trim().equalsIgnoreCase("Y")) {
@@ -104,16 +116,11 @@ public class Main {
 		File[] radarImageFileList = radarImagesFolder.listFiles();
 		for(File radarImageFile : radarImageFileList) {
 			String radarImageFileName = radarImageFile.getName();
-			System.out.println("'"+radarImageFileName + "' found, proceed? [Y/N]");
+			System.out.println("This radar image has been found: '"+radarImageFileName + "', proceed? [Y/N]");
 			if (!reader.next().trim().equalsIgnoreCase("Y")) {
 				System.out.println("OK. I will skip to the next file if I find one.");
 				continue;
 			}
-			/*
-			 * read file lines into an arraylist in order to have the dimensions and create the matrix
-			 */
-			
-			
 			/*
 			 * 3. create radar image matrix
 			 */
@@ -124,7 +131,7 @@ public class Main {
 
 		    
 		    //print the extended radar image (just for check & fun)
-		    System.out.println("Would you like to see the extended radar image? (Y/N)");
+		    System.out.println("Would you like to see the extended radar image (extended image is used to find edge cases)? (Y/N)");
 		    if (reader.next().trim().equalsIgnoreCase("Y")) {
 		    	Utils.printImageMatrix(radarImageMatrix);
 		    }
@@ -141,7 +148,7 @@ public class Main {
 			 */
 			for(File knownSpaceInvadersImageFile : knownSpaceInvadersImageFileList) {
 				String knownSpaceInvadersImageFileName = knownSpaceInvadersImageFile.getName();
-				System.out.println("'"+knownSpaceInvadersImageFileName + "' found, proceed? [Y/N]");
+				System.out.println("This space invaders image has been found: '"+knownSpaceInvadersImageFileName + "', proceed or skip? [Y/N]");
 				if (!reader.next().trim().equalsIgnoreCase("Y")) {
 					System.out.println("OK. I will skip to the next file if I find one.");
 					continue;
@@ -265,10 +272,13 @@ public class Main {
 					System.out.println("You have selected a high tolerance value. This can cause overlapped images!!!");
 				}
 				System.out.println("==================================================================================");
+				System.out.println("No more Space Invaders to find for " + radarImageFileName);
 			} //for(File knownSpaceInvadersImageFile : knownSpaceInvadersImageFileList) END
 		    
-		    
+			System.out.println("I will step to the next radar image file.");
 		}//for(File radarImageFile : radarImageFileList) END
+		System.out.println("No more files to examine, quit.");
+		System.exit(0);
 	} //main END
 }
 
