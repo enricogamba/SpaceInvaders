@@ -71,12 +71,12 @@ public class Main {
 			System.out.println("Default space invaders images -> " + knownSpaceInvadersImagesPath);
 			System.out.println("Default radar image -> " + radarImagesFolderPath);
 			System.out.println("Would you like to use the default folders (Y) or your own (N)?");
+			
+			
 			if (!reader.next().trim().equalsIgnoreCase("Y")) {
-				System.out.println("Insert your Radar Image folder path:");
 				while ((radarImagesFolderPath = reader.nextLine().trim()).trim().length()==0) {
 					System.out.println("Insert your Radar Image folder path:");	
 				}
-				System.out.println("Insert yout Space Invaders folder path");
 				while ((knownSpaceInvadersImagesPath = reader.nextLine().trim()).trim().length()==0) {
 					System.out.println("Insert your Space Invaders folder path:");	
 				}
@@ -113,8 +113,15 @@ public class Main {
 			/*
 			 * 2. read radar image file(s)
 			 */
-			File radarImagesFolder = new File(radarImagesFolderPath);
-			File[] radarImageFileList = radarImagesFolder.listFiles();
+			File radarImagesFolder = null;
+			File[] radarImageFileList = null;
+			try {
+				radarImagesFolder = new File(radarImagesFolderPath);
+				radarImageFileList = radarImagesFolder.listFiles();
+			} catch (Exception e) {
+				System.out.println("Error reading radar image. Verify the path and try again.");
+				System.exit(0);
+			}
 			for(File radarImageFile : radarImageFileList) {
 				String radarImageFileName = radarImageFile.getName();
 				System.out.println("This radar image has been found: '"+radarImageFileName + "', proceed? [Y/N]");
@@ -125,7 +132,9 @@ public class Main {
 				/*
 				 * 3. create radar image matrix
 				 */
-				char[][] radarImageMatrix = Utils.getMatrixFromFile(radarImageFile, radarImageMatrixExtensions, ext);
+				char[][] radarImageMatrix = null;
+				radarImageMatrix = Utils.getMatrixFromFile(radarImageFile, radarImageMatrixExtensions, ext);
+
 				
 				
 
@@ -142,8 +151,16 @@ public class Main {
 			    /*
 			     * 4. read space invaders image files names
 			     */
-				File knownSpaceInvadersImagesFolder = new File(knownSpaceInvadersImagesPath);
-				File[] knownSpaceInvadersImageFileList = knownSpaceInvadersImagesFolder.listFiles();
+			    File knownSpaceInvadersImagesFolder = null;
+			    File[] knownSpaceInvadersImageFileList = null;
+			    try {
+			    	knownSpaceInvadersImagesFolder = new File(knownSpaceInvadersImagesPath);
+			    	knownSpaceInvadersImageFileList = knownSpaceInvadersImagesFolder.listFiles();
+				} catch (Exception e) {
+					System.out.println("Error reading space invaders image. Verify the path and try again.");
+					System.exit(0);
+				}
+
 				/*
 				 * 5. cycle space invaders
 				 */
